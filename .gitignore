@@ -1,0 +1,29 @@
+# Byte-compiled / intermediate files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Cython debug files
+*.so
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.bak
+*.orig
+
+# IDE settings
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db

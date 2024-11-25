@@ -1,0 +1,150 @@
+{
+
+    "phones": {
+        "regex-groups": {
+            "year": 1,
+            "month": 2,
+            "day": 3,
+            "hour": 4,
+            "min": 5,
+            "sec": 6
+        },
+
+        "Google": {
+            "camera-image": {
+                "pattern": "PXL_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})(?:_.*)?\\.jpg",
+                "format": "PXL_YYYYMMDD_HHMMSS.jpg",
+                "sample": "PXL_20241120_123045.jpg"
+            },
+            "screenshot": {
+                "pattern": "Screenshot_(\\d{4})(\\d{2})(\\d{2})-(\\d{2})(\\d{2})(\\d{2})\\.png",
+                "format": "Screenshot_YYYYMMDD-HHMMSS.png",
+                "sample": "Screenshot_20241120-123045.png"
+            } 
+        },
+
+        "Huawei": {
+            "camera-image": {
+                "pattern": "IMG_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})(?:_.*)?\\.jpg",
+                "format": "IMG_YYYYMMDD_HHMMSS.jpg",
+                "sample": "IMG_20241120_123045.jpg"
+            },
+            "screenshot": {
+                "pattern": "Screenshot_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.png",
+                "format": "Screenshot_YYYYMMDD_HHMMSS.png",
+                "sample": "Screenshot_20241120_123045.png"
+            } 
+        },
+
+        "iQOO": {
+            "camera-image": {
+                "pattern": "IMG_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})(?:_.*)?\\.jpg",
+                "format": "IMG_YYYYMMDD_HHMMSS.jpg",
+                "sample": "IMG_20241120_123045.jpg"
+            },
+            "screenshot": {
+                "pattern": "Screenshot_(\\d{4})-(\\d{2})-(\\d{2})-(\\d{2})-(\\d{2})-(\\d{2})-\\d{3}\\.jpg",
+                "format": "Screenshot_YYYY-MM-DD-HH-MM-SS-###.jpg",
+                "sample": "Screenshot_2024-11-20-12-30-45-001.jpg"
+            } 
+        },
+
+        "Motorola": {
+            "camera-image": {
+                "pattern": "IMG_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})(?:_.*)?\\.jpg",
+                "format": "IMG_YYYYMMDD_HHMMSS.jpg",
+                "sample": "IMG_20241120_123045.jpg"
+            },
+            "screenshot": {
+                "pattern": "Screenshot_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.png",
+                "format": "Screenshot_YYYYMMDD_HHMMSS.png",
+                "sample": "Screenshot_20241120_123045.png"
+            }
+        },
+
+        "OnePlus": {
+            "camera-image": {
+                "pattern": "IMG_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})(?:_.*)?\\.jpg",
+                "format": "IMG_YYYYMMDD_HHMMSS.jpg",
+                "sample": "IMG_20241120_123045.jpg"
+            },
+            "screenshot": {
+                "pattern": "Screenshot_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.png",
+                "format": "Screenshot_YYYYMMDD_HHMMSS.png",
+                "sample": "Screenshot_20241120_123045.png"
+            }
+        },
+
+        "OPPO": {
+            "camera-image": {
+                "pattern": "IMG(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})(?:_.*)?\\.jpg",
+                "format": "IMGYYYYMMDD_HHMMSS.jpg",
+                "sample": "IMG20241120_123045.jpg"
+            },
+            "screenshot": {
+                "pattern": "Screenshot_(\\d{4})-(\\d{2})-(\\d{2})-(\\d{2})-(\\d{2})-(\\d{2})\\.jpg",
+                "format": "Screenshot_YYYY-MM-DD-HH-MM-SS.jpg",
+                "sample": "Screenshot_2024-11-20-12-30-45.jpg"
+            }
+        },
+
+        "POCO, Redmi, Xiaomi": {
+            "camera-image": {
+                "pattern": "IMG_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})(?:_.*)?\\.jpg",
+                "format": "IMG_YYYYMMDD_HHMMSS_(optional).jpg",
+                "sample": "IMG_20241120_123045.jpg"
+            },
+            "screenshot": {
+                "pattern": "Screenshot_(\\d{4})-(\\d{2})-(\\d{2})-(\\d{2})-(\\d{2})-(\\d{2})-\\d{3}_.+\\.jpg",
+                "format": "Screenshot_YYYY-MM-DD-HH-MM-SS-###_optional.jpg",
+                "sample": "Screenshot_2024-11-20-12-30-45-001_example.jpg"
+            }
+        },
+
+        "Realme": {
+            "camera-image": {
+                "pattern": "IMG_?(\\d{4})(\\d{2})(\\d{2})_?(\\d{2})(\\d{2})(\\d{2})(?:_.*)?\\.jpg",
+                "format": "IMG_YYYYMMDD_HHMMSS.jpg",
+                "sample": "IMG_20241120_123045.jpg"
+            },
+            "screenshot": {
+                "pattern": "Screenshot_(\\d{4})-(\\d{2})-(\\d{2})-(\\d{2})-(\\d{2})-(\\d{2})-\\d{2,3}_.+\\.jpg",
+                "format": "Screenshot_YYYY-MM-DD-HH-MM-SS-###_optional.jpg",
+                "sample": "Screenshot_2024-11-20-12-30-45-01_example.jpg"
+            }
+        },
+
+        "Samsung": {
+                "camera-image": {
+                "pattern": "(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})(?:_.*)?\\.jpg",
+                "format": "YYYYMMDD_HHMMSS.jpg",
+                "sample": "20241120_123045.jpg"
+            },
+            "screenshot": {
+                "pattern": "Screenshot_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.(png|jpg)",
+                "format": "Screenshot_YYYYMMDD_HHMMSS.png|jpg",
+                "sample": "Screenshot_20241120_123045.jpg"
+            }
+        },
+        
+        "Vivo": {
+            "camera-image": {
+                "pattern": "IMG_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})(?:_.*)?\\.jpg",
+                "format": "IMG_YYYYMMDD_HHMMSS.jpg",
+                "sample": "IMG_20241120_123045.jpg"
+            },
+            "screenshot": {
+                "pattern": "Screenshot_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.jpg",
+                "format": "Screenshot_YYYYMMDD_HHMMSS.jpg",
+                "sample": "Screenshot_20241120_123045.jpg"
+            }
+        } 
+
+    },       
+    
+    "cameras": {
+        
+    }
+
+}
+

@@ -1,0 +1,12 @@
+{
+    "current": {
+        "appearance": "system",
+        "color-theme": "blue"
+    },
+
+    "default": {
+        "appearance" : "system",
+        "color-theme": "blue"
+    }
+
+}
