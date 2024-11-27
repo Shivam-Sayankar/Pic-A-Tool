@@ -1,0 +1,79 @@
+{
+
+    "phones": {
+        "regex-groups": {
+            "year": 1,
+            "month": 2,
+            "day": 3,
+            "hour": 4,
+            "min": 5,
+            "sec": 6
+        },
+        "1": {
+            "name": "Google",
+            "camera-image": "PXL_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.jpg",
+            "screenshot": "Screenshot_(\\d{4})(\\d{2})(\\d{2})-(\\d{2})(\\d{2})(\\d{2})\\.png"   
+        },
+        "2": {
+            "name": "Huawei",
+            "camera-image": "IMG_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.jpg",
+            "screenshot": "Screenshot_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.png"
+        },
+        "3": {
+            "name": "iQOO",
+            "camera-image": "IMG_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.jpg",
+            "screenshot": "Screenshot_(\\d{4})-(\\d{2})-(\\d{2})-(\\d{2})-(\\d{2})-(\\d{2})-\\d{3}\\.jpg"
+        },
+        "4": {
+            "name": "Motorola",
+            "camera-image": "IMG_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.jpg",
+            "screenshot": "Screenshot_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.png"
+        },
+        "5": {
+            "name": "OnePlus",
+            "camera-image": "IMG_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.jpg",
+            "screenshot": "Screenshot_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.png"
+        },
+        "6": {
+            "name": "OPPO",
+            "camera-image": "IMG(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.jpg",
+            "screenshot": "Screenshot_(\\d{4})-(\\d{2})-(\\d{2})-(\\d{2})-(\\d{2})-(\\d{2})\\.jpg"
+        },
+        "7": {
+            "name": "POCO, Redmi, Xiaomi",
+            "camera-image": "IMG_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})(?:_(\\d+|BURST\\d+))?\\.jpg",
+            "screenshot": "Screenshot_(\\d{4})-(\\d{2})-(\\d{2})-(\\d{2})-(\\d{2})-(\\d{2})-\\d{3}_.+\\.jpg"
+        },
+        "8": {
+            "name": "Realme",
+            "camera-image": "IMG_?(\\d{4})(\\d{2})(\\d{2})_?(\\d{2})(\\d{2})(\\d{2})\\.jpg",
+            "screenshot": "Screenshot_(\\d{4})-(\\d{2})-(\\d{2})-(\\d{2})-(\\d{2})-(\\d{2})-\\d{2,3}_.+\\.jpg"
+        },
+        "9": {
+            "name": "Samsung",
+            "camera-image": "(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.jpg",
+            "screenshot": "Screenshot_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.(png|jpg)"
+        },
+        "10": {
+            "name": "Vivo",
+            "camera-image": "IMG_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.jpg",
+            "screenshot": "Screenshot_(\\d{4})(\\d{2})(\\d{2})_(\\d{2})(\\d{2})(\\d{2})\\.jpg"
+        }
+    },
+
+
+    "cameras": {
+        "1": {
+            "name": "Canon",
+            "camera-image": "regex-code",
+            "screenshot": "regex-code"
+        },
+        "2": {
+            "name": "Sony",
+            "camera-image": "regex-code",
+            "screenshot": "regex-code"
+        }
+    }
+
+}
+
