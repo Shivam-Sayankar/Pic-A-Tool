@@ -1,3 +1,4 @@
 customtkinter
 piexif
 pyexiv2
+pprint
