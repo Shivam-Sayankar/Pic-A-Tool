@@ -1,1 +1,3 @@
 customtkinter
+piexif
+pyexiv2
