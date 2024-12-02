@@ -45,4 +45,5 @@ def modify_exif_timestamp(preview_window, file_path, new_timestamp_text):
             preview_window.see(tk.END)
 
         except Exception as e:
-            preview_window.insert("end", f"\n⚠️ Failed to modify EXIF data for {file} ⚠️ : {e} \n")
+            # preview_window.insert("end", f"\n⚠️ Failed to modify EXIF data for {file} ⚠️ : {e} \n")
+            print(f"⚠️ Failed to modify EXIF data for {file} ⚠️ : {e}")
