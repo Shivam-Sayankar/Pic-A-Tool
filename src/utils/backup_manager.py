@@ -3,9 +3,9 @@ import os
 import pickle
 from datetime import datetime
 import tkinter as tk
-from utils.metadata_editor import extract_exif
-from components.progress_bar_manager import show_progress_bar, hide_progress_bar
-from shared_state import shared_state
+from src.utils.metadata_editor import extract_exif
+from src.components.progress_bar_manager import show_progress_bar, hide_progress_bar
+from src.shared_state import shared_state
 from pprint import pprint
 import time
 
@@ -48,11 +48,6 @@ def backup_exif_data(preview_window, progress_bar, images_folder: str, all_match
         "files": {}
     }
 
-    
-    # Show progress bar
-    # preview_window_height = shared_state.pic_a_time["preview_height_with_progress"]
-    # show_progress_bar(progress_bar, preview_window, preview_window_height)
-
     progress = 0
     progress_bar.set(progress)
 
@@ -82,9 +77,6 @@ def backup_exif_data(preview_window, progress_bar, images_folder: str, all_match
 
         backup_data["backup_metadata"]["total_files_processed"] += 1
         
-        # progress += step_size
-        # progress_bar.set(progress)
-        # time.sleep(1)
         progress_bar.set(progress_bar.get() + step_size)
         progress_bar.update_idletasks()
     
@@ -95,18 +87,14 @@ def backup_exif_data(preview_window, progress_bar, images_folder: str, all_match
 
     backup_summary = (
         f"\n\nBackup created successfully at: {backup_file_path}\n"
-        f"Total Files Processed: {backup_data['backup_metadata']['total_files_processed']}\n"
-        f"Files with EXIF Data: {backup_data['backup_metadata']['files_with_exif_data']}\n"
-        f"Files without EXIF Data: {backup_data['backup_metadata']['files_without_exif_data']}\n\n"
+        f"> Total Files Processed: {backup_data['backup_metadata']['total_files_processed']}\n"
+        f"> Files with EXIF Data: {backup_data['backup_metadata']['files_with_exif_data']}\n"
+        f"> Files without EXIF Data: {backup_data['backup_metadata']['files_without_exif_data']}\n\n"
     )
 
     preview_window.insert("end", backup_summary)
     preview_window.see(tk.END)
 
-    # Hide progress bar
-    # preview_window_height = shared_state.pic_a_time["preview_height_no_progress"]
-    # hide_progress_bar(progress_bar, preview_window, preview_window_height)
 
-
-def restore_data():
+def restore_exif_data():
     pass

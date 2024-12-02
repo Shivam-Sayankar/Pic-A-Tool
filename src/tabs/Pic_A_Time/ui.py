@@ -1,9 +1,9 @@
 from tkinter import *
 import customtkinter as ctk
-from utils.file_operations import browse_folder, validate_path
-from utils.json_helpers import load_config
+from src.utils.file_operations import browse_folder, validate_path
+from src.utils.json_helpers import load_config
 from .core import phone_images_cat, phone_company_selection, modify_images
-from shared_state import shared_state
+from src.shared_state import shared_state
 
 
 def pic_a_time_content(pic_a_time_tab):

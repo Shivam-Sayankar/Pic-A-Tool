@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from tkinter import filedialog
 import os
-from shared_state import shared_state
+from src.shared_state import shared_state
 
 
 def browse_folder(folder_path_entry):

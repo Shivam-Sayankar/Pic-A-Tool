@@ -1,12 +1,13 @@
 import tkinter as tk
 import re
 import os
-from utils.json_helpers import load_config
-from utils.regex_helpers import matches
-from utils.backup_manager import backup_exif_data
-from utils.metadata_editor import modify_exif_timestamp
-from components.progress_bar_manager import show_progress_bar, hide_progress_bar
-from shared_state import shared_state
+import time
+from src.utils.json_helpers import load_config
+from src.utils.regex_helpers import matches
+from src.utils.backup_manager import backup_exif_data
+from src.utils.metadata_editor import modify_exif_timestamp
+from src.components.progress_bar_manager import show_progress_bar, hide_progress_bar
+from src.shared_state import shared_state
 from pprint import pprint
 
 config = load_config()
@@ -71,12 +72,14 @@ def modify_images(preview_window, progress_bar):
     backup_folder = shared_state.app["backup_folder"]
     take_backup = shared_state.app["take_backup"]
 
-    # Show progress bar
-    # preview_window_height = shared_state.pic_a_time["preview_height_with_progress"]
-    # show_progress_bar(progress_bar, preview_window, preview_window_height)
-
     if take_backup:
         backup_exif_data(preview_window, progress_bar, selected_folder, all_matches, "Pic-A-Time", backup_folder)
+
+    preview_window.insert("end", f"\n*** Initialising process of modifying images ***\n\n")
+    time.sleep(1)
+
+    successfully_processed = 0
+    failed_to_process = 0
 
     progress = 0
     progress_bar.set(progress)
@@ -105,15 +108,28 @@ def modify_images(preview_window, progress_bar):
             image_date_time_text = f"{year}:{month}:{day} {hour}:{minute}:{second}"
             # image_date_time_text = "2023:07:08 00:00:00"
             
-            modify_exif_timestamp(preview_window, file_path, image_date_time_text)
+            try:
+                modify_exif_timestamp(preview_window, file_path, image_date_time_text)
+                successfully_processed += 1
+            except Exception as e:
+                preview_window.insert("end", f"Could not process {file}: {e}")
+                failed_to_process += 1
 
             progress += step_size
             progress_bar.set(progress)
             progress_bar.update_idletasks()
 
             preview_window.see(tk.END)
+
+    summary = (
+        f"\n\n*** SUMMARY ***\n"
+        f"> Successfully processed: {successfully_processed} files\n"
+        f"> Failed to process: {failed_to_process} files\n"
+    )
+
+    preview_window.insert("end", summary)
+
+    preview_window.see(tk.END)
     
-    # Hide progress bar
-    # preview_window_height = shared_state.pic_a_time["preview_height_no_progress"]
-    # hide_progress_bar(progress_bar, preview_window, preview_window_height)
+    # progress_bar.set(0) # Reset back to zero
     
