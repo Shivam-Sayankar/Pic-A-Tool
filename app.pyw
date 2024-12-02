@@ -1,6 +1,6 @@
 from tkinter import *
 import customtkinter as ctk
-from tabs.Pic_A_Time.ui import pic_a_time_content
+from src.tabs.Pic_A_Time.ui import pic_a_time_content
 
 root = ctk.CTk()
 root.title("Pic-A-Tool")
