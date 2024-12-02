@@ -2,13 +2,13 @@ from tkinter import *
 import customtkinter as ctk
 from utils.file_operations import browse_folder, validate_path
 from utils.json_helpers import load_config
-from .core import phone_images_cat, phone_company_selection, phone_company_dropdown_trigger
+from .core import phone_images_cat, phone_company_selection, modify_images
 from shared_state import shared_state
 
 
 def pic_a_time_content(pic_a_time_tab):
 
-    ## Pic-A-Time Tab ## piati piana piato
+    ## Pic-A-Time Tab
 
     config = load_config()
     phone_companies = [key for key in config["phones"].keys() if key != "regex-groups"]
@@ -75,7 +75,7 @@ def pic_a_time_content(pic_a_time_tab):
         state="readonly",
         width=270
         )
-    # img_category_dropown.set("Camera-App Images") # Setting a default value
+    
     img_category_dropown.grid(row=0, column=1)
 
     # Phone Company
@@ -94,10 +94,11 @@ def pic_a_time_content(pic_a_time_tab):
 
 
     # Preview Section
-    preview_label = ctk.CTkLabel(phone_images_tab, text="Preview")#, fg_color="#565b5e")
+    preview_label = ctk.CTkLabel(phone_images_tab, text="Preview")
     preview_label.grid(row=1, column=0, columnspan=4, pady=10)
 
-    preview_window = ctk.CTkTextbox(phone_images_tab, width=800, height=240)
+    preview_window_height = shared_state.pic_a_time["preview_height_no_progress"] # 270
+    preview_window = ctk.CTkTextbox(phone_images_tab, width=800, height=240)#preview_window_height) # 240
     preview_window.grid(row=2, column=0, columnspan=4, padx=10)
 
 
@@ -110,24 +111,23 @@ def pic_a_time_content(pic_a_time_tab):
     progressbar.set(0)
     progressbar.pack(pady=14)
 
-    """
-    # Functions to hide and show the widget
-    def hide_widget():
-        label.pack_forget()  # Remove the widget from the layout
-
-    def show_widget():
-        label.pack(pady=20)  # Re-add the widget to the layout
-    """
-
-
-    modify_btn = ctk.CTkButton(btns_frame, text="Modify", height=40, width=150)
-    modify_btn.pack(side="left", pady=5)#, padx=70)#grid(row=3, column=1)
+    modify_btn = ctk.CTkButton(
+        btns_frame,
+        text="Modify",
+        height=40,
+        width=150,
+        command=lambda: modify_images(
+            preview_window, 
+            progressbar
+        )
+    )
+    modify_btn.pack(side="left", pady=5)
 
     restore_btn = ctk.CTkButton(btns_frame, text="Restore", height=40, width=150)
-    restore_btn.pack(side="left", padx=175, pady=5)#grid(row=3, column=1)
+    restore_btn.pack(side="left", padx=175, pady=5)
 
     cancel_btn = ctk.CTkButton(btns_frame, text="Cancel", height=40, width=150)
-    cancel_btn.pack(side="left", pady=5)#, padx=70)#grid(row=3, column=2)
+    cancel_btn.pack(side="left", pady=5)
 
 
 
