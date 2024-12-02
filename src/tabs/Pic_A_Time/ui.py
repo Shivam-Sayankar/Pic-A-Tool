@@ -2,7 +2,7 @@ from tkinter import *
 import customtkinter as ctk
 from src.utils.file_operations import browse_folder, validate_path
 from src.utils.json_helpers import load_config
-from .core import phone_images_cat, phone_company_selection, modify_images
+from .core import phone_images_cat, phone_company_selection, modify_images, restore_images_exif
 from src.shared_state import shared_state
 
 
@@ -123,7 +123,13 @@ def pic_a_time_content(pic_a_time_tab):
     )
     modify_btn.pack(side="left", pady=5)
 
-    restore_btn = ctk.CTkButton(btns_frame, text="Restore", height=40, width=150)
+    restore_btn = ctk.CTkButton(
+        btns_frame, 
+        text="Restore", 
+        height=40, 
+        width=150,
+        command=lambda: restore_images_exif(preview_window, progressbar)
+    )
     restore_btn.pack(side="left", padx=175, pady=5)
 
     cancel_btn = ctk.CTkButton(btns_frame, text="Cancel", height=40, width=150)

@@ -1,10 +1,12 @@
 import tkinter as tk
+from tkinter import filedialog
 import re
 import os
 import time
 from src.utils.json_helpers import load_config
+from src.utils.pickle_helper import load_pickle
 from src.utils.regex_helpers import matches
-from src.utils.backup_manager import backup_exif_data
+from src.utils.backup_manager import backup_exif_data, restore_exif_data
 from src.utils.metadata_editor import modify_exif_timestamp
 from src.components.progress_bar_manager import show_progress_bar, hide_progress_bar
 from src.shared_state import shared_state
@@ -112,7 +114,7 @@ def modify_images(preview_window, progress_bar):
                 modify_exif_timestamp(preview_window, file_path, image_date_time_text)
                 successfully_processed += 1
             except Exception as e:
-                preview_window.insert("end", f"Could not process {file}: {e}")
+                preview_window.insert("end", f"Could not process {file}: {e}\n")
                 failed_to_process += 1
 
             progress += step_size
@@ -133,3 +135,17 @@ def modify_images(preview_window, progress_bar):
     
     # progress_bar.set(0) # Reset back to zero
     
+def restore_images_exif(preview_window, progress_bar):
+
+    # Specify the initial directory
+    initial_directory = shared_state.app["backup_folder"]
+    
+    # Open the file dialog starting at the specified directory
+    backup_file_path = filedialog.askopenfilename(initialdir=initial_directory, title="Select a Backup File")
+
+    # restore_exif_data(preview_window, progress_bar, file_path)
+    preview_window.insert("end", "\n*** Restoration ***\n\n")
+    # 
+
+    restore_exif_data(preview_window, progress_bar, backup_file_path)
+
