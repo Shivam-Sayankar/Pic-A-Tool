@@ -21,10 +21,17 @@ def matches(directory, pattern, preview_window):
     display_limit = 10
     num = min( len(all_matches), display_limit )
 
-    preview_window.insert("end", f"Total matches found: {len(all_matches)}\n\nDisplaying the first {num} matches (out of {len(all_matches)}):\n")
 
-    preview_window.after(500, display_matches(all_matches, num, preview_window))
+    preview_window.insert("end", f"\nTotal matches found: {len(all_matches)}\n\nDisplaying the first {num} matches (out of {len(all_matches)}):\n")
 
-    preview_window.see(tk.END)
+    # preview_window.after(
+    #     500, 
+    #     preview_window.insert(
+    #         "end",
+    #         f"\nTotal matches found: {len(all_matches)}\n\nDisplaying the first {num} matches (out of {len(all_matches)}):\n")
+    #     )
+
+    display_matches(all_matches, num, preview_window)
+    # preview_window.see(tk.END)
 
     return all_matches
