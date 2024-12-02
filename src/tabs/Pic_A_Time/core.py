@@ -4,7 +4,7 @@ import os
 from utils.json_helpers import load_config
 from utils.regex_helpers import matches
 from utils.backup_manager import backup_exif_data
-from utils.metada_editor import modify_exif_timestamp
+from utils.metadata_editor import modify_exif_timestamp
 from components.progress_bar_manager import show_progress_bar, hide_progress_bar
 from shared_state import shared_state
 from pprint import pprint
