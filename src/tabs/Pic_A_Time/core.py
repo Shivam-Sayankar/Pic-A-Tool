@@ -1,6 +1,11 @@
+import tkinter as tk
+import re
+import os
 from utils.json_helpers import load_config
 from utils.regex_helpers import matches
-import tkinter as tk
+from utils.backup_manager import backup_exif_data
+from utils.metada_editor import modify_exif_timestamp
+from components.progress_bar_manager import show_progress_bar, hide_progress_bar
 from shared_state import shared_state
 from pprint import pprint
 
@@ -8,7 +13,7 @@ config = load_config()
 
 def phone_images_cat(selection, preview_window):
 
-    if shared_state.pic_a_time["folder_selected"]:# folder_selected:
+    if shared_state.pic_a_time["is_folder_selected"]:
 
         preview_window.insert("end", f"Image Category Selected: {selection}\n")
 
@@ -19,7 +24,7 @@ def phone_images_cat(selection, preview_window):
 
 def phone_company_selection(selection, preview_window):
 
-    if shared_state.pic_a_time["folder_selected"]:#.folder_selected:
+    if shared_state.pic_a_time["is_folder_selected"]:
         shared_state.pic_a_time["phone_company"] = selection
         preview_window.insert("end", f"Phone Company Selected: {selection} {format_and_sample()}\n")
 
@@ -31,54 +36,84 @@ def phone_company_selection(selection, preview_window):
             preview_window
         )
 
+        shared_state.pic_a_time["all_matches"] = all_matches
+
         if len(all_matches) > 0:
             preview_window.insert("end", "\nPress the [ Modify ] button to proceed.\n")
             
-        preview_window.see(tk.END)
-
-    # print(f"phone comany selection function triggered. Selection: {selection}")
-
-    # shared_state.pic_a_time["phone_company"] = selection
-    # preview_window.insert("end", f"Phone Company Selected: {selection} {format_and_sample()}\n")
+        # preview_window.see(tk.END)
         
 
 def format_and_sample():
-
     
     image_category = shared_state.pic_a_time["image_category"]
     phone_company = shared_state.pic_a_time["phone_company"]
-
-    # print(f"company: {phone_company}, category: {image_category}")
-
     base = config["phones"][phone_company][image_category]
-    # pprint(base)
 
     format = base["format"]
     sample = base["sample"]
 
     # preview_window.insert("end", f"[ {format} | {sample} ]")
 
-    return f"\n\t[ {format} | {sample} ]"
+    return f"\n\n\t[ {format}  |  {sample} ]"
 
 
-def phone_company_dropdown_trigger(selection, preview_window):
+def modify_images(preview_window, progress_bar):
+
+    selected_folder = shared_state.pic_a_time["folder_path"]
+    all_matches = shared_state.pic_a_time["all_matches"]
 
     image_category = shared_state.pic_a_time["image_category"]
     phone_company = shared_state.pic_a_time["phone_company"]
+    pattern = config["phones"][phone_company][image_category]["pattern"]
+    
+    # Backup requirements
+    backup_folder = shared_state.app["backup_folder"]
+    take_backup = shared_state.app["take_backup"]
 
-    print(f"company: {phone_company}, category: {image_category}")
+    # Show progress bar
+    # preview_window_height = shared_state.pic_a_time["preview_height_with_progress"]
+    # show_progress_bar(progress_bar, preview_window, preview_window_height)
 
-    base = config["phones"][shared_state.pic_a_time["phone_company"]][shared_state.pic_a_time["image_category"]]
+    if take_backup:
+        backup_exif_data(preview_window, progress_bar, selected_folder, all_matches, "Pic-A-Time", backup_folder)
 
-    if shared_state.pic_a_time["folder_selected"]:
-        phone_company_selection(
-            selection, 
-            preview_window
-        )
-        matches(
-            shared_state.pic_a_time["folder_selected"], 
-            base["pattern"],
-            preview_window
-        )
+    progress = 0
+    progress_bar.set(progress)
+    step_size = 1 / len(all_matches)
 
+    for i, file in enumerate(all_matches):
+        
+        filename_pattern = re.compile(pattern)
+        match = filename_pattern.search(file)
+        file_path = os.path.join(selected_folder, file)
+
+        if os.path.isfile(file_path) and match:
+            
+            preview_window.insert("end", f"Processing ({i+1}/{len(all_matches)}) {file}... ")
+
+            base = config["phones"]["regex-groups"]
+
+            year = match.group(int(base["year"]))
+            month = match.group(int(base["month"]))
+            day = match.group(int(base["day"]))
+
+            hour = match.group(int(base["hour"]))
+            minute = match.group(int(base["min"]))
+            second = match.group(int(base["sec"]))
+
+            image_date_time_text = f"{year}:{month}:{day} {hour}:{minute}:{second}"
+            # image_date_time_text = "2023:07:08 00:00:00"
+            
+            modify_exif_timestamp(preview_window, file_path, image_date_time_text)
+
+            progress += step_size
+            progress_bar.set(progress)
+            progress_bar.update_idletasks()
+
+            preview_window.see(tk.END)
+    
+    # Hide progress bar
+    # preview_window_height = shared_state.pic_a_time["preview_height_no_progress"]
+    # hide_progress_bar(progress_bar, preview_window, preview_window_height)
     
