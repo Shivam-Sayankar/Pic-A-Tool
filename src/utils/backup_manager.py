@@ -143,8 +143,8 @@ def restore_exif_data(preview_window, progress_bar, backup_file_path):
         preview_window.see(tk.END)
 
         if not os.path.exists(original_path):
-            preview_window.insert("end", "The original path of folder where images where stored does not exist.\n")
-            original_path = filedialog.askdirectory(title="Select New Folder")
+            preview_window.insert("end", "Original folder not found. Please select a new folder to restore the files.\n\n")
+            original_path = filedialog.askdirectory(title="Select New Folder for Restoration")
 
 
         # If original path is intact
@@ -155,11 +155,21 @@ def restore_exif_data(preview_window, progress_bar, backup_file_path):
 
         # Progress bar setup
         progress_bar.set(1)
-        step_size = 1 / total_files
+
+        if total_files > 0:
+            step_size = 1 / total_files
+        else:
+            preview_window.insert("end", "No files to restore in the backup.\n")
+            return
 
         time.sleep(1)
 
         preview_window.insert("end", "\n*** Initialising Backup Restoration ***\n\n")
+
+        # Keeping a count of success and failures of processing
+        successfully_processed = 0
+        failed_to_process = 0
+        failed_files = []
 
         for i, file in enumerate(all_files):
             # preview_window.insert("end", f"{file}\n")
@@ -171,16 +181,31 @@ def restore_exif_data(preview_window, progress_bar, backup_file_path):
             try:
                 apply_exif(file_path, exif_data)
                 preview_window.insert("end", f"DONE\n")
+                successfully_processed += 1
 
             except Exception as e:
                 preview_window.insert("end", f"\nCould not process {file}: {e}\n")
+                failed_to_process += 1
+                failed_files.append(file)
 
             finally:
                 preview_window.see(tk.END)
                 progress_bar.set(progress_bar.get() - step_size)
                 progress_bar.update_idletasks()
+        
+        restoration_summary = (
+            f"\nRestoration complete.\n"
+            f"> Total files processed: {successfully_processed}\n"
+            f"> Failed to process: {failed_to_process} files\n"
+        )
+
+        preview_window.insert("end", restoration_summary)
+
+        # Displaying files that couldnt be restored
+        for img in failed_files:
+            preview_window.insert("end", f"\t* {img}\n")
 
     except Exception as e:
-        preview_window.insert("end", f"Could not access the selected backupfile: {e}")
+        preview_window.insert("end", f"Could not access the selected backupfile: {e}\n\n")
 
     
