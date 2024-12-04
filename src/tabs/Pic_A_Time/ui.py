@@ -2,7 +2,7 @@ from tkinter import *
 import customtkinter as ctk
 from src.utils.file_operations import browse_folder, validate_path
 from src.utils.json_helpers import load_config
-from .core import phone_images_cat, phone_company_selection, modify_images, restore_images_exif
+from .core import phone_images_cat, phone_company_selection, threaded_modify_images, restore_images_exif
 from src.shared_state import shared_state
 
 
@@ -116,7 +116,7 @@ def pic_a_time_content(pic_a_time_tab):
         text="Modify",
         height=40,
         width=150,
-        command=lambda: modify_images(
+        command=lambda: threaded_modify_images(
             preview_window, 
             progressbar
         )

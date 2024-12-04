@@ -1,11 +1,13 @@
 import os
 import pickle
 import time
+from threading import Thread
 from datetime import datetime
 import tkinter as tk
 from tkinter import filedialog
 from src.utils.metadata_editor import extract_exif, apply_exif
 from src.utils.pickle_helper import load_pickle
+from src.utils.threads_helper import threaded_task
 from src.components.progress_bar_manager import show_progress_bar, hide_progress_bar
 from src.shared_state import shared_state
 from pprint import pprint
@@ -16,16 +18,13 @@ APP_VERSION = shared_state.app["app_version"]
 TAB_NAME = shared_state.pic_a_time["tab_name"]
 PROCESSED_BY = f"{APP_NAME} v{APP_VERSION}"
 
-def backup_exif_data(preview_window, progress_bar, images_folder: str, all_matches: list, backup_type: str, root_backup_folder="backups"):
-
-    # all_files = os.listdir(images_folder)
-    # pprint(files)
+def backup_exif_data(preview_window, progress_bar, images_folder: str, all_matches: list, backup_type: str):
 
     current_time = datetime.now()
     backup_file_name = current_time.strftime("%d-%b-%Y_%H-%M-%S")
     backup_date_stamp = current_time.strftime("%d-%b-%Y %H:%M:%S")
 
-
+    root_backup_folder = shared_state.app["backup_folder"]
     backup_folder = os.path.join(root_backup_folder, TAB_NAME)  # backups/tab_name
     os.makedirs(backup_folder, exist_ok=True)
 
@@ -34,7 +33,7 @@ def backup_exif_data(preview_window, progress_bar, images_folder: str, all_match
         )  # backups/tab_name/backup_file_name_[TAB_NAME].pkl
 
     preview_window.see(tk.END)
-    preview_window.insert("end", f"\n\nCreating Backup:  {backup_date_stamp}")
+    preview_window.insert("end", f"\n\nCreating Backup:  {backup_date_stamp}\n\n")
 
 
     backup_data = {
@@ -52,7 +51,6 @@ def backup_exif_data(preview_window, progress_bar, images_folder: str, all_match
 
     progress = 0
     progress_bar.set(progress)
-
     step_size = 1 / len(all_matches)
 
 
@@ -63,14 +61,17 @@ def backup_exif_data(preview_window, progress_bar, images_folder: str, all_match
             preview_window.insert("end", f"\nSkipping {file}: File does not exist.")
             continue
         
-        try:
-            exif_data = extract_exif(file_path)
-        except Exception as e:
-            preview_window.insert("end", f"Could not extract exif data because of: {e}")
+        # try:
+        extract_output = extract_exif(file_path)
+        exif_data = extract_output[0]
+        extract_output_error = extract_output[1]
+        # except Exception as e:
+        #     preview_window.insert("end", f"Could not extract exif data of {file}: {e}\n")
 
         if exif_data:
             backup_data["backup_metadata"]["files_with_exif_data"] += 1
         else:
+            preview_window.insert("end", f"Could not extract exif data of {file}: {extract_output_error}\n")
             backup_data["backup_metadata"]["files_without_exif_data"] += 1
 
         backup_data["files"][file] = {
@@ -97,7 +98,22 @@ def backup_exif_data(preview_window, progress_bar, images_folder: str, all_match
     preview_window.insert("end", backup_summary)
     preview_window.see(tk.END)
 
-    time.sleep(1)
+    # time.sleep(1)
+
+
+
+# def threaded_backup_exif_data(preview_window, progress_bar, images_folder: str, all_matches: list, backup_type: str):
+
+#     threaded_task(
+#         backup_exif_data, 
+#         preview_window, 
+#         progress_bar, 
+#         images_folder, 
+#         all_matches, 
+#         backup_type
+#     )
+
+
 
 def restore_exif_data(preview_window, progress_bar, backup_file_path):
     
@@ -204,8 +220,20 @@ def restore_exif_data(preview_window, progress_bar, backup_file_path):
         # Displaying files that couldnt be restored
         for img in failed_files:
             preview_window.insert("end", f"\t* {img}\n")
+        
+        failed_files = [] 
 
     except Exception as e:
         preview_window.insert("end", f"Could not access the selected backupfile: {e}\n\n")
 
+    preview_window.see(tk.END)
+
+
+def threaded_restore_exif_data(preview_window, progress_bar, backup_file_path):
     
+    threaded_task(
+        restore_exif_data,
+        preview_window,
+        progress_bar, 
+        backup_file_path
+    )
