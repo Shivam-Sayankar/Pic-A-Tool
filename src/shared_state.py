@@ -18,7 +18,7 @@ class SharedState:
             "all_matches": [],
             "preview_height_with_progress": 240,
             "preview_height_no_progress": 270,
-
+            "cancel_request": False
         }
         self.pic_a_name = {
             "folder_selected": False,
