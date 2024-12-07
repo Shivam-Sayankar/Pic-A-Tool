@@ -5,11 +5,9 @@ import os
 import time
 from src.utils.threads_helper import threaded_task
 from src.utils.json_helpers import load_config
-from src.utils.pickle_helper import load_pickle
 from src.utils.regex_helpers import matches
 from src.utils.backup_manager import backup_exif_data, threaded_restore_exif_data
 from src.utils.metadata_editor import modify_exif_timestamp
-from src.components.progress_bar_manager import show_progress_bar, hide_progress_bar
 from src.shared_state import shared_state
 from pprint import pprint
 
@@ -26,10 +24,13 @@ def phone_images_cat(selection, preview_window):
         
 
 
-def phone_company_selection(selection, preview_window):
+def phone_company_selection(selection, preview_window, progress_bar):
 
     if shared_state.pic_a_time["is_folder_selected"]:
         shared_state.pic_a_time["phone_company"] = selection
+        shared_state.pic_a_time["cancel_request"] = False
+        progress_bar.set(0)
+        
         preview_window.insert("end", f"Phone Company Selected: {selection} {format_and_sample()}\n")
 
         base = config["phones"][shared_state.pic_a_time["phone_company"]][shared_state.pic_a_time["image_category"]]
@@ -44,8 +45,6 @@ def phone_company_selection(selection, preview_window):
 
         if len(all_matches) > 0:
             preview_window.insert("end", "\nPress the [ Modify ] button to proceed.\n")
-            
-        # preview_window.see(tk.END)
         
 
 def format_and_sample():
@@ -56,8 +55,6 @@ def format_and_sample():
 
     format = base["format"]
     sample = base["sample"]
-
-    # preview_window.insert("end", f"[ {format} | {sample} ]")
 
     return f"\n\n\t[ {format}  |  {sample} ]"
 
@@ -74,9 +71,13 @@ def modify_images(preview_window, progress_bar):
     # Backup requirements
     take_backup = shared_state.app["take_backup"]
 
-    if take_backup:
+    if take_backup and len(all_matches) > 0:
         preview_window.insert("end", f"\nStarting backup...\n")
         backup_exif_data(preview_window, progress_bar, selected_folder, all_matches, "Pic-A-Time")
+    elif len(all_matches) < 1:
+        preview_window.insert("end", "\nNo Files to process\n")
+        preview_window.see(tk.END)
+        return
 
 
     preview_window.insert("end", f"\n*** Initialising process of modifying images ***\n\n")
@@ -90,6 +91,10 @@ def modify_images(preview_window, progress_bar):
     step_size = 1 / len(all_matches)
 
     for i, file in enumerate(all_matches):
+
+        if shared_state.pic_a_time["cancel_request"]:
+            preview_window.insert("end", f"\n\n~~ Image Modification Cancelled ~~\n\n")
+            return
         
         filename_pattern = re.compile(pattern)
         match = filename_pattern.search(file)
@@ -147,17 +152,18 @@ def threaded_modify_images(preview_window, progress_bar):
     )
 
  
-def restore_images_exif(preview_window, progress_bar):
+def restore_images_exif(preview_window, progress_bar, main_tab):
 
-    # Specify the initial directory
+    # Initial backup directory
     initial_directory = shared_state.app["backup_folder"]
     
-    # Open the file dialog starting at the specified directory
+    # Selecting backup file
     backup_file_path = filedialog.askopenfilename(initialdir=initial_directory, title="Select a Backup File")
 
-    # restore_exif_data(preview_window, progress_bar, file_path)
     preview_window.insert("end", "\n*** Restoration ***\n\n")
-    # 
 
-    threaded_restore_exif_data(preview_window, progress_bar, backup_file_path)
+    threaded_restore_exif_data(preview_window, progress_bar, backup_file_path, main_tab)
 
+
+def cancel_processes():
+    shared_state.pic_a_time["cancel_request"] = True
