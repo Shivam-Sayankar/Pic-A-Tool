@@ -2,8 +2,7 @@ from tkinter import *
 import customtkinter as ctk
 from src.utils.file_operations import browse_folder, validate_path
 from src.utils.json_helpers import load_config
-from .core import phone_images_cat, phone_company_selection, threaded_modify_images, restore_images_exif
-from src.shared_state import shared_state
+from .core import phone_images_cat, phone_company_selection, threaded_modify_images, restore_images_exif, cancel_processes
 
 
 def pic_a_time_content(pic_a_time_tab):
@@ -86,7 +85,7 @@ def pic_a_time_content(pic_a_time_tab):
     phone_company_dropown = ctk.CTkComboBox(
         phone_images_tab, 
         values=phone_companies, 
-        command=lambda selection: phone_company_selection(selection, preview_window),
+        command=lambda selection: phone_company_selection(selection, preview_window, progressbar),
         state="readonly", 
         width=270
         )
@@ -97,8 +96,8 @@ def pic_a_time_content(pic_a_time_tab):
     preview_label = ctk.CTkLabel(phone_images_tab, text="Preview")
     preview_label.grid(row=1, column=0, columnspan=4, pady=10)
 
-    preview_window_height = shared_state.pic_a_time["preview_height_no_progress"] # 270
-    preview_window = ctk.CTkTextbox(phone_images_tab, width=800, height=240)#preview_window_height) # 240
+    # preview_window_height = shared_state.pic_a_time["preview_height_no_progress"] # 270
+    preview_window = ctk.CTkTextbox(phone_images_tab, width=800, height=240) # 240
     preview_window.grid(row=2, column=0, columnspan=4, padx=10)
 
 
@@ -128,11 +127,17 @@ def pic_a_time_content(pic_a_time_tab):
         text="Restore", 
         height=40, 
         width=150,
-        command=lambda: restore_images_exif(preview_window, progressbar)
+        command=lambda: restore_images_exif(preview_window, progressbar, phone_images_tab),
     )
     restore_btn.pack(side="left", padx=175, pady=5)
 
-    cancel_btn = ctk.CTkButton(btns_frame, text="Cancel", height=40, width=150)
+    cancel_btn = ctk.CTkButton(
+        btns_frame, 
+        text="Cancel", 
+        height=40, 
+        width=150,
+        command= cancel_processes
+    )
     cancel_btn.pack(side="left", pady=5)
 
 
