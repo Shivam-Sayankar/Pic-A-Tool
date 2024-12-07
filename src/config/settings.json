@@ -1,12 +1,14 @@
 {
     "current": {
-        "appearance": "system",
-        "color-theme": "blue"
+        "appearance": "System",
+        "color_theme": "blue",
+        "take_backup": "yes",
+        "backup_folder": "src/backups/"
     },
-
     "default": {
-        "appearance" : "system",
-        "color-theme": "blue"
+        "appearance": "system",
+        "color_theme": "blue",
+        "take_backup": "yes",
+        "backup_folder": "src/backups/"
     }
-
 }

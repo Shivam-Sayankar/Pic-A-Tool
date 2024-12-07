@@ -5,8 +5,6 @@ class SharedState:
         self.app = {
             "app_name": "Pic-A-Tool",
             "app_version": "1.0",
-            "take_backup": True,
-            "backup_folder": "src/backups/"
         }
 
         self.pic_a_time = {
