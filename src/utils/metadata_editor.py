@@ -1,6 +1,7 @@
 import os # For working with directories
 import piexif # For working with JPEG and TIFF
 import pyexiv2 # For every other image format including PNG
+from datetime import datetime
 import tkinter as tk
 from pprint import pprint
 
@@ -28,7 +29,9 @@ def apply_exif(file_path: str, exif_data):
 
 
 def modify_exif_timestamp(preview_window, file_path, new_timestamp_text):
-    file = file_path.split("/")[-1]
+
+    # file = file_path.split("/")[-1]
+
     if file_path.endswith(".jpg"):
         # try:
         exif_dict = piexif.load(file_path)
@@ -40,7 +43,13 @@ def modify_exif_timestamp(preview_window, file_path, new_timestamp_text):
         exif_bytes = piexif.dump(exif_dict)
         piexif.insert(exif_bytes, file_path)
 
-        # print(f"Updated EXIF data for {file}")
+        new_datetime_obj = datetime.strptime(new_timestamp_text, "%Y:%m:%d %H:%M:%S") # Converting datetime string to a datetime object
+        
+        timestamp = new_datetime_obj.timestamp() # Converting datetime object to seconds since epoch
+
+        # Modifying access and modification times
+        os.utime(file_path, (timestamp, timestamp))
+
         preview_window.insert("end", "DONE\n")
         preview_window.see(tk.END)
 
