@@ -3,6 +3,7 @@ from tkinter import filedialog
 import re
 import os
 import time
+from src.tabs.Settings.core import change_settings, load_settings
 from src.utils.threads_helper import threaded_task
 from src.utils.json_helpers import load_config
 from src.utils.regex_helpers import matches
@@ -12,6 +13,7 @@ from src.shared_state import shared_state
 from pprint import pprint
 
 config = load_config()
+settings_file = load_settings()
 
 def phone_images_cat(selection, preview_window):
 
@@ -69,7 +71,8 @@ def modify_images(preview_window, progress_bar):
     pattern = config["phones"][phone_company][image_category]["pattern"]
     
     # Backup requirements
-    take_backup = shared_state.app["take_backup"]
+    # take_backup = shared_state.app["take_backup"]
+    take_backup = True if settings_file["current"]["take_backup"] == "yes" else False
 
     if take_backup and len(all_matches) > 0:
         preview_window.insert("end", f"\nStarting backup...\n")
@@ -155,7 +158,7 @@ def threaded_modify_images(preview_window, progress_bar):
 def restore_images_exif(preview_window, progress_bar, main_tab):
 
     # Initial backup directory
-    initial_directory = shared_state.app["backup_folder"]
+    initial_directory = settings_file["current"]["backup_folder"] #shared_state.app["backup_folder"]
     
     # Selecting backup file
     backup_file_path = filedialog.askopenfilename(initialdir=initial_directory, title="Select a Backup File")

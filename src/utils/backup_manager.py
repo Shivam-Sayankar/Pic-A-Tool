@@ -1,15 +1,14 @@
 import os
 import pickle
 import time
-from threading import Thread
 from datetime import datetime
 import tkinter as tk
 from tkinter import filedialog
+from src.tabs.Settings.core import change_settings, load_settings
 from src.utils.metadata_editor import extract_exif, apply_exif
 from src.utils.pickle_helper import load_pickle
 from src.utils.threads_helper import threaded_task
 from src.components.confirmation_popup import confirmation_popup
-from src.components.progress_bar_manager import show_progress_bar, hide_progress_bar
 from src.shared_state import shared_state
 from pprint import pprint
 
@@ -19,6 +18,8 @@ APP_VERSION = shared_state.app["app_version"]
 TAB_NAME = shared_state.pic_a_time["tab_name"]
 PROCESSED_BY = f"{APP_NAME} v{APP_VERSION}"
 
+settings_file = load_settings()
+
 def backup_exif_data(preview_window, progress_bar, images_folder: str, all_matches: list, backup_type: str):
 
     if len(all_matches) > 0:
@@ -27,7 +28,8 @@ def backup_exif_data(preview_window, progress_bar, images_folder: str, all_match
         backup_file_name = current_time.strftime("%d-%b-%Y_%H-%M-%S")
         backup_date_stamp = current_time.strftime("%d-%b-%Y %H:%M:%S")
 
-        root_backup_folder = shared_state.app["backup_folder"]
+        root_backup_folder = settings_file["current"]["backup_folder"]
+
         backup_folder = os.path.join(root_backup_folder, TAB_NAME)  # backups/tab_name
         os.makedirs(backup_folder, exist_ok=True)
 

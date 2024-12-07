@@ -5,9 +5,12 @@ from src.utils.json_helpers import load_config
 from .core import phone_images_cat, phone_company_selection, threaded_modify_images, restore_images_exif, cancel_processes
 
 
+ui_components = {}
+
 def pic_a_time_content(pic_a_time_tab):
 
     ## Pic-A-Time Tab
+    global ui_components # For passing it to settings
 
     config = load_config()
     phone_companies = [key for key in config["phones"].keys() if key != "regex-groups"]
@@ -140,5 +143,6 @@ def pic_a_time_content(pic_a_time_tab):
     )
     cancel_btn.pack(side="left", pady=5)
 
-
+    ui_components["btns_frame"] = btns_frame
+    ui_components["phone_images_tab"] = phone_images_tab
 
