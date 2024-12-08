@@ -13,7 +13,6 @@ from src.shared_state import shared_state
 from pprint import pprint
 
 config = load_config()
-settings_file = load_settings()
 
 def phone_images_cat(selection, preview_window):
 
@@ -63,6 +62,8 @@ def format_and_sample():
 
 def modify_images(preview_window, progress_bar):
 
+    settings_file = load_settings()
+
     selected_folder = shared_state.pic_a_time["folder_path"]
     all_matches = shared_state.pic_a_time["all_matches"]
 
@@ -71,10 +72,9 @@ def modify_images(preview_window, progress_bar):
     pattern = config["phones"][phone_company][image_category]["pattern"]
     
     # Backup requirements
-    # take_backup = shared_state.app["take_backup"]
-    take_backup = True if settings_file["current"]["take_backup"] == "yes" else False
+    take_backup = settings_file["current"]["take_backup"]
 
-    if take_backup and len(all_matches) > 0:
+    if take_backup == "yes" and len(all_matches) > 0:
         preview_window.insert("end", f"\nStarting backup...\n")
         backup_exif_data(preview_window, progress_bar, selected_folder, all_matches, "Pic-A-Time")
     elif len(all_matches) < 1:
@@ -156,6 +156,8 @@ def threaded_modify_images(preview_window, progress_bar):
 
  
 def restore_images_exif(preview_window, progress_bar, main_tab):
+
+    settings_file = load_settings()
 
     # Initial backup directory
     initial_directory = settings_file["current"]["backup_folder"] #shared_state.app["backup_folder"]
