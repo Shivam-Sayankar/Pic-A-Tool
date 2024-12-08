@@ -92,7 +92,7 @@ With features like timestamp adjustments, file renaming, and offers additional t
 - Load a backup file and preview its contents.
 - Revert metadata changes with a single click.
 
-## 🛠 To-Do
+## 📋 To-Do
 
 ### Pic-A-Name
 - Implement bulk renaming functionality based on timestamps.
