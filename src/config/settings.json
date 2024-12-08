@@ -1,9 +1,9 @@
 {
     "current": {
-        "appearance": "System",
+        "appearance": "system",
         "color_theme": "blue",
         "take_backup": "yes",
-        "backup_folder": "src/backups/"
+        "backup_folder": "src/backups"
     },
     "default": {
         "appearance": "system",
