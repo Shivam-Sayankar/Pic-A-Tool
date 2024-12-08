@@ -76,7 +76,7 @@ With features like timestamp adjustments, file renaming, and offers additional t
 - Navigate to the `Settings` tab.
 - Customize the appearance and color theme.
 - Enable or disable automatic backups.
-- Select backup folder
+- Select backup folder.
 
 
 
@@ -91,6 +91,18 @@ With features like timestamp adjustments, file renaming, and offers additional t
 
 - Load a backup file and preview its contents.
 - Revert metadata changes with a single click.
+
+## 🛠 To-Do
+
+### Pic-A-Name
+- Implement bulk renaming functionality based on timestamps.
+- Provide customizable naming schemes (e.g., YYYY-MM-DD_HH-MM-SS).
+- Add preview options for naming patterns.
+
+### Pic-A-Tool
+- Add tools for altering image EXIF data (e.g., removing location metadata).
+- Explore additional utilities like compressing images.
+- Implement batch processing for all tools.
 
 <!-- 
 ---
